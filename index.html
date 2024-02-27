@@ -3,24 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>转盘抽奖</title>
+    <title>阿兹弗特今天的饭</title>
     <style>
-        body {
+        .roulette-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0; 
+            height: 300px;
+            position: relative;
         }
-        .center-text {
-            color: blue;
-            font-weight: bold;
+
+        .roulette-wheel {
+            width: 300px;
+            height: 300px;
+            background-image: url('roll2.png'); /* 背景图片路径 */
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            transition: transform 1s ease-out; /* 转盘速度 */
+        }
+
+        .roulette-pointer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px; /* 指针大小 */
+            height: 300px;
+            background-image: url('roll1.png'); /* 指针图片路径 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .roulette-controls {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #spin-btn {
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="center-text">测试一下</div>
+    <div class="roulette-container">
+        <div class="roulette-wheel"></div>
+        <div class="roulette-pointer"></div>
+        <div class="roulette-controls">
+            <button id="spin-btn">开始转动</button>
+        </div>
+    </div>
+
+    <script>
+        let lastAngle = 0; // 全局变量存储上次旋转后的角度
+        document.addEventListener("DOMContentLoaded", function() {
+            const rouletteWheel = document.querySelector('.roulette-wheel');
+            rouletteWheel.style.transform = 'rotate(0deg)';
+            const spinBtn = document.getElementById('spin-btn');
+            const totalSlots = 19; // 划19个区域
+            //const targetAngle = 0;
+            const a = 160;
+
+            spinBtn.addEventListener('click', () => {
+                // 随机选择一个旋转角度
+                const targetAngle = (Math.floor(Math.random() * totalSlots) + 1) * 360 / totalSlots + 360;
+
+                lastAngle = targetAngle + lastAngle;
+
+                //仅转动转盘背景
+                rouletteWheel.style.transform = `rotate(${lastAngle}deg)`;
+
+                //打印本次转动的目标角度到控制台
+                console.log(`本次转动的目标角度为: ${targetAngle}度`);
+                console.log(`本次转动的最后目标角度为: ${lastAngle}度`);
+                
+            });
+        });
+    </script>
 </body>
 </html>
